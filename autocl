@@ -1,0 +1,36 @@
+#!bin/bash
+
+#Program to change info on cover letter for different job applications
+#Run from cover letter directory
+#----------------------------------------------------------------------
+
+
+FILE=$1   #cover letter file name
+POS=$2    #position name
+COMPY=$3  #company name
+
+
+#newly created files will be moved here
+newdir="$COMPY"_"$(echo $POS | cut --delimiter " " --fields 1-2)"
+echo $newdir
+mkdir "$newdir"    
+mkdir ./tmp   
+
+#unzip .odt file and make replacements in content.cml
+unzip $FILE -d ./tmp
+cd ./tmp
+sed -i "s/XCOMPANYX/$COMPY/" content.xml
+sed -i "s/XPOSITIONX/$POS/" content.xml
+
+#convert back to <yourname>.odt
+zip -r ../CL_Bharath_Kamath.odt *
+cd ..
+
+#clean up
+rm -r tmp
+
+#move files to new directory and create a pdf
+mv CL_Bharath_Kamath.odt "$newdir"/
+cd "$newdir"
+unoconv -f pdf CL_Bharath_Kamath.odt
+	
