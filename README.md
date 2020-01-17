@@ -3,7 +3,7 @@ Script to help automate job applications
 
 ## For Windows
 Use git bash (not working with cygwin)\
-Check dependencies `which zip` and `which unzip`
+Check dependencies `which zip` and `which unzip` \
 Have Libre Office Installed\
 Install unoconv from https://github.com/unoconv/unoconv\
 get zip/unzip from https://github.com/bmatzelle/gow/wiki \
