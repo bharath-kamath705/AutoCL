@@ -14,12 +14,20 @@ COMPY=$3  #company name
 
 
 #newly created files will be moved here
-newdir="$COMPY"_"$(echo $POS | cut --delimiter " " --fields 1-2)"
-echo $newdir
-mkdir "$newdir"    
-mkdir ./tmp   
+newdir="$COMPY"_"$(echo $POS | cut --delimiter " " --fields 1-2)"    
+#append a number if dir alread exists
+if [[ -e $newdir ]] ; then
+    i=0
+    while [[ -e $newdir-$i ]] ; do
+        let i++
+    done
+    newdir=$newdir-$i
+fi
+mkdir "$newdir"
+
 
 #unzip .odt file and make replacements in content.cml
+mkdir ./tmp 
 unzip $FILE -d ./tmp
 cd ./tmp/word
 sed -i "s/XCOMPANYX/$COMPY/" document.xml
@@ -27,19 +35,18 @@ sed -i "s/XPOSITIONX/$POS/" document.xml
 
 #convert back to <yourname>.docx
 cd ..
-zip -r ../CL_MyName.docx *
+zip -r ../CL_Bharath_Kamath.docx *
 cd ..
 
 #clean up
 rm -r tmp
 
 #move files to new directory and create a pdf
-mv CL_MyName.docx "$newdir"/
+mv CL_Bharath_Kamath.docx "$newdir"/
 cd "$newdir"
-/c/'Program Files'/LibreOffice/program/python  /c/'Program Files (x86)'/unoconv/unoconv -f pdf CL_MyName.docx
+/c/'Program Files'/LibreOffice/program/python  /c/'Program Files (x86)'/unoconv/unoconv -f pdf CL_Bharath_Kamath.docx
 
 #Without LibreOffice dependency. Causing permission issues with Windows 10
 #python3  /c/'Program Files (x86)'/unoconv/unoconv -f pdf CL_MyName.docx
 
-#Open newly created pdf to verify contents
-start CL_MyName.pdf
+start CL_Bharath_Kamath.pdf
