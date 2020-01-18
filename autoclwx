@@ -1,0 +1,40 @@
+#!bin/bash
+
+#Auto Cover Letter Windows Docx
+#----------------------------------------------------------------------
+#Program to change info on coverletter.docx and convert to pdf for different job applications
+#For Windows Git Bash
+#Run from coverletter.docx directory
+#----------------------------------------------------------------------
+
+
+FILE=$1   #cover letter <filename>.docx
+POS=$2    #position name
+COMPY=$3  #company name
+
+
+#newly created files will be moved here
+newdir="$COMPY"_"$(echo $POS | cut --delimiter " " --fields 1-2)"
+echo $newdir
+mkdir "$newdir"    
+mkdir ./tmp   
+
+#unzip .odt file and make replacements in content.cml
+unzip $FILE -d ./tmp
+cd ./tmp/word
+sed -i "s/XCOMPANYX/$COMPY/" document.xml
+sed -i "s/XPOSITIONX/$POS/" document.xml
+
+#convert back to <yourname>.docx
+cd ..
+zip -r ../CL_MyName.docx *
+cd ..
+
+#clean up
+rm -r tmp
+
+#move files to new directory and create a pdf
+mv CL_MyName.docx "$newdir"/
+cd "$newdir"
+/c/'Program Files'/LibreOffice/program/python  /c/'Program Files (x86)'/unoconv/unoconv -f pdf CL_MyName.docx
+start CL_MyName.pdf
