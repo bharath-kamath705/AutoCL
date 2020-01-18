@@ -37,4 +37,9 @@ rm -r tmp
 mv CL_MyName.docx "$newdir"/
 cd "$newdir"
 /c/'Program Files'/LibreOffice/program/python  /c/'Program Files (x86)'/unoconv/unoconv -f pdf CL_MyName.docx
+
+#Without LibreOffice dependency. Causing permission issues with Windows 10
+#python3  /c/'Program Files (x86)'/unoconv/unoconv -f pdf CL_MyName.docx
+
+#Open newly created pdf to verify contents
 start CL_MyName.pdf
